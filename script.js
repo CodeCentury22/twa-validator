@@ -1,54 +1,53 @@
-// Global variable to hold the communication port sent by Android
-let androidPort = null;
+// Global placeholder for the native message port channel
+let nativeCommunicationPort = null;
 
-// 1. Listen for the secure communication channel from the Android app
+// 1. Listen for the structural handshake port from Android Custom Tabs
 window.addEventListener("message", (event) => {
-    // Check if the incoming message contains communication ports
+    // Check if the initialization payload carries native ports
     if (event.ports && event.ports.length > 0) {
-        androidPort = event.ports[0];
-        console.log("SUCCESS: Android communication port bound securely!");
+        nativeCommunicationPort = event.ports[0];
+        console.log("PORT CONNECTION HANDSHAKE SUCCESSFUL!");
 
-        // Set up an event listener directly on the port to handle future incoming data from Android
-        androidPort.onmessage = (portEvent) => {
-            console.log("App says:", portEvent.data);
-            const outputDiv = document.getElementById("native-output");
-            if (outputDiv) {
-                outputDiv.innerText = "Received: " + portEvent.data;
+        // Set up the message router directly on this isolated port channel
+        nativeCommunicationPort.onmessage = (portEvent) => {
+            console.log("Data payload received from Android:", portEvent.data);
+            
+            const targetDiv = document.getElementById("native-output");
+            if (targetDiv) {
+                targetDiv.innerText = "Received: " + portEvent.data;
             }
         };
         return;
     }
 
-    // Fallback logic for simple string broadcasts (like your initial native greeting)
+    // Direct fallback layer for string broadcasts
     if (typeof event.data === "string" && !event.data.includes("webpack")) {
-        console.log("App says (direct broadcast):", event.data);
-        const outputDiv = document.getElementById("native-output");
-        if (outputDiv) {
-            outputDiv.innerText = "Received: " + event.data;
+        console.log("Direct event listener caught:", event.data);
+        const targetDiv = document.getElementById("native-output");
+        if (targetDiv) {
+            targetDiv.innerText = "Received: " + event.data;
         }
     }
 });
 
-// 2. Updated function to send a message back to the Android App
+// 2. Transmit string objects directly into the secure native port
 function sendToApp(msg) {
-    if (androidPort) {
-        // Post the message directly into the validated channel port
-        androidPort.postMessage(msg);
-        console.log("Message successfully dispatched into Android Port channel:", msg);
+    if (nativeCommunicationPort) {
+        nativeCommunicationPort.postMessage(msg);
+        console.log("Message pushed directly to native communication channel:", msg);
     } else {
-        console.warn("Communication port is not ready yet. Ensure Digital Asset Links are verified.");
-        alert("Android port not detected! Wait for the 'bridge open' log.");
+        console.warn("Channel port uninitialized. Verification pending.");
     }
 }
 
-// 3. Hook up the HTML button interface element
+// 3. Attach layout buttons once the document renders completely
 document.addEventListener("DOMContentLoaded", () => {
-    const sendButton = document.getElementById("send-btn");
-    const messageInput = document.getElementById("message-input");
+    const actionButton = document.getElementById("send-btn");
+    const textInputField = document.getElementById("message-input");
 
-    if (sendButton && messageInput) {
-        sendButton.addEventListener("click", () => {
-            sendToApp(messageInput.value);
+    if (actionButton && textInputField) {
+        actionButton.addEventListener("click", () => {
+            sendToApp(textInputField.value);
         });
     }
 });
