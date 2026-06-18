@@ -6,11 +6,19 @@
 <body>
     <h1>TWA Validation Server Active</h1>
     
-    <!-- Element where messages from your Android app will display -->
-    <div id="native-output">Waiting for message from Android...</div>
+    <!-- Area to display incoming messages from Android -->
+    <div id="native-output" style="margin-bottom: 20px; font-weight: bold; color: green;">
+        Waiting for message from Android...
+    </div>
 
-    <!-- Corrected tag name (script) and added a closing tag -->
+    <!-- Interactive elements to send messages back to Android -->
+    <div style="margin-top: 20px;">
+        <input type="text" id="message-input" value="Hello Android from Web!" placeholder="Type your message here..." />
+        <button id="send-btn">Send to App</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
+
 
