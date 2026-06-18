@@ -6,9 +6,9 @@
     ],
     "target": {
       "namespace": "android_app",
-      "package_name": "YOUR_ANDROID_APP_PACKAGE_NAME",
+      "package_name": "com.al.twa_validator",
       "sha256_cert_fingerprints": [
-        "YOUR_SHA256_FINGERPRINT"
+        "80:53:E3:5D:3C:FD:0F:FC:FC:B0:9D:C2:BA:7E:40:B2:B2:6E:35:7F:C6:FE:C2:8B:09:28:0E:1B:D2:61:E4:D1"
       ]
     }
   }
