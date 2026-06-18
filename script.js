@@ -11,13 +11,8 @@ window.addEventListener("message", (event) => {
 
 // 2. Send a message to the Android App via the injected bridge
 function sendToApp(msg) {
-    if (window.android && typeof window.android.postMessage === 'function') {
-        window.android.postMessage(msg);
-        console.log("Message successfully dispatched to Android framework:", msg);
-    } else {
-        console.warn("Android native bridge ('window.android') is not available in this environment.");
-        alert("Bridge not detected! Make sure you are running inside the TWA app, not a standard browser.");
-    }
+     window.android.postMessage(msg);
+     console.log("Message successfully dispatched to Android framework:", msg);
 }
 
 // 3. Hook up the HTML button to our function
